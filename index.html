@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Math Monster Arena</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-wrapper">
+    <!-- HUD overlay on top of canvas -->
+    <div id="hud">
+      <div id="hud-left">
+        <div id="player-title">Math Rookie</div>
+        <div id="player-level">Lv. 1</div>
+      </div>
+      <div id="hud-center">
+        <div id="problem-display">? + ? = ?</div>
+      </div>
+      <div id="hud-right">
+        <div id="xp-section">
+          <div id="xp-bar-container">
+            <div id="xp-bar-fill"></div>
+          </div>
+          <div id="xp-text">0 / 10 Questions</div>
+        </div>
+        <div id="health-display">
+          <span class="heart">❤️</span>
+          <span class="heart">❤️</span>
+          <span class="heart">❤️</span>
+        </div>
+        <div id="streak-display">
+          <span id="streak-icon">🔥</span>
+          <span id="streak-count">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- The game canvas -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Score/stats bar at bottom -->
+    <div id="stats-bar">
+      <span>Correct: <span id="stat-correct">0</span></span>
+      <span>Wrong: <span id="stat-wrong">0</span></span>
+      <span>Best Streak: <span id="stat-best-streak">0</span></span>
+    </div>
+
+    <!-- Achievement badges -->
+    <div id="achievements-bar">
+      <div class="badge" id="badge-streak5" title="Hot Streak: 5 in a row">⚡5</div>
+      <div class="badge" id="badge-streak10" title="Super Streak: 10 in a row">🌟10</div>
+      <div class="badge" id="badge-speed" title="Speed Demon: 10 fast answers">💨</div>
+      <div class="badge" id="badge-perfect" title="Perfect 10: 10 correct, 0 wrong">💎</div>
+      <div class="badge" id="badge-century" title="Century Club: 100 problems solved">💯</div>
+    </div>
+
+    <!-- START OVERLAY -->
+    <div id="start-overlay" class="overlay">
+      <div class="overlay-content">
+        <div class="overlay-title">Math Monster Arena</div>
+        <div class="overlay-subtitle">Fly through space and shoot the right answers!</div>
+        <div class="overlay-instructions">
+          <p><strong>Arrow Keys</strong> or <strong>WASD</strong> to move</p>
+          <p>Press <strong>Space</strong> to shoot beams</p>
+          <p>Hit the <strong>correct answer</strong> to earn XP</p>
+          <p>Avoid <strong>asteroids</strong> and <strong>wrong answers</strong></p>
+          <p>Level up to <strong>evolve your creature</strong> and <strong>upgrade weapons!</strong></p>
+        </div>
+        <button class="overlay-btn" id="start-btn">START TRAINING!</button>
+        <button class="overlay-btn overlay-btn-secondary" id="start-load-btn" style="display:none;">LOAD GAME</button>
+      </div>
+    </div>
+
+    <!-- PAUSE OVERLAY -->
+    <div id="pause-overlay" class="overlay hidden">
+      <div class="overlay-content">
+        <div class="overlay-title" id="pause-title">PAUSED</div>
+        <p style="opacity:0.7;margin-bottom:16px">Press Escape to resume</p>
+        <div class="pause-buttons">
+          <button class="overlay-btn" id="resume-btn">RESUME</button>
+          <button class="overlay-btn overlay-btn-secondary" id="save-btn">SAVE GAME</button>
+          <button class="overlay-btn overlay-btn-secondary" id="load-btn">LOAD GAME</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVEL UP OVERLAY -->
+    <div id="level-up-overlay" class="overlay hidden">
+      <div class="overlay-content">
+        <div class="overlay-title" id="level-up-title">LEVEL UP!</div>
+        <div id="new-level-display"></div>
+        <div id="new-title-display"></div>
+        <button class="overlay-btn" id="level-up-btn">AWESOME!</button>
+      </div>
+    </div>
+
+    <!-- EVOLUTION OVERLAY -->
+    <div id="evolution-overlay" class="overlay hidden">
+      <div class="overlay-content evolution-content">
+        <div class="overlay-title" id="evolution-title">YOUR CREATURE IS EVOLVING!</div>
+        <div id="evolution-canvas-container">
+          <canvas id="evolution-old-canvas" width="160" height="160"></canvas>
+          <div id="evolution-arrow">➜</div>
+          <canvas id="evolution-new-canvas" width="160" height="160"></canvas>
+        </div>
+        <div id="evolution-name"></div>
+        <button class="overlay-btn" id="evolution-btn">COOL!</button>
+      </div>
+    </div>
+
+    <!-- GAME OVER OVERLAY -->
+    <div id="gameover-overlay" class="overlay hidden">
+      <div class="overlay-content">
+        <div class="overlay-title" id="gameover-title">GAME OVER</div>
+        <div id="gameover-stats"></div>
+        <button class="overlay-btn" id="gameover-btn">TRY AGAIN!</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="creatures.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
