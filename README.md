@@ -18,7 +18,11 @@ Open `index.html` in any modern web browser. That's it.
 
 ### Gameplay
 
-- Math problems appear at the top of the screen (addition and subtraction).
+- Math problems appear at the top of the screen.
+- **Levels 1-4:** addition and subtraction.
+- **Level 5+:** multiplication is added to the mix.
+- **Level 10+:** division joins in (integer results only).
+- All answers stay within 0-100.
 - Answer bubbles fall from above — shoot the **correct answer** to earn XP.
 - Avoid **asteroids** and **wrong answers** — they cost you health.
 - Answer **10 questions** to level up. Difficulty scales with your level.

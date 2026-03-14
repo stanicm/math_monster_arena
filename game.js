@@ -285,7 +285,7 @@ function drawStarfield() {
 // ------------------------------------------------------------
 // Math Problem Generation
 // ------------------------------------------------------------
-/** Return operand ranges based on level tier:
+/** Return operand ranges for addition/subtraction based on level tier:
  *  Levels 1-9:  num2 is 1-9  (single-digit second operand)
  *  Levels 10-14: num2 is 10-20 (teens second operand)
  *  Levels 15+:  num2 is unrestricted (full difficulty)
@@ -308,56 +308,77 @@ function getNumberRanges(level) {
   return { maxNum1, minNum2, maxNum2 };
 }
 
+/** Pick a random operation available at the current level. */
+function pickOperation(level) {
+  const ops = ['+', '−'];
+  if (level >= 5) ops.push('×');
+  if (level >= 10) ops.push('÷');
+  return ops[Math.floor(Math.random() * ops.length)];
+}
+
 function generateProblem() {
   const { maxNum1, minNum2, maxNum2 } = getNumberRanges(state.level);
-  const isAdd = Math.random() < 0.5;
+  const operator = pickOperation(state.level);
 
   let num1, num2, answer;
-  if (isAdd) {
-    // Addition — result capped at 100
+
+  if (operator === '+') {
     num1 = randInt(1, maxNum1);
     num2 = randInt(minNum2, Math.min(maxNum2, 100 - num1));
-    // If num1 is too large for even minNum2, shrink num1
     if (100 - num1 < minNum2) {
       num1 = randInt(1, 100 - minNum2);
       num2 = randInt(minNum2, Math.min(maxNum2, 100 - num1));
     }
     answer = num1 + num2;
-  } else {
-    // Subtraction — result always non-negative, num2 >= minNum2
-    num1 = randInt(minNum2, maxNum1);  // num1 must be at least minNum2
+
+  } else if (operator === '−') {
+    num1 = randInt(minNum2, maxNum1);
     num2 = randInt(minNum2, Math.min(maxNum2, num1));
     answer = num1 - num2;
+
+  } else if (operator === '×') {
+    // Multiplication — product capped at 100
+    const maxFactor = state.level <= 9 ? 10 : 12;
+    num2 = randInt(2, maxFactor);
+    num1 = randInt(2, Math.floor(100 / num2));
+    answer = num1 * num2;
+
+  } else {
+    // Division — integer results only, dividend ≤ 100
+    const maxDivisor = state.level <= 14 ? 10 : 12;
+    num2 = randInt(2, maxDivisor);
+    const maxQuotient = Math.floor(100 / num2);
+    const quotient = randInt(1, maxQuotient);
+    num1 = quotient * num2;
+    answer = quotient;
   }
 
-  const operator = isAdd ? '+' : '−';
   state.currentProblem = { num1, num2, operator, answer };
   state.problemStartTime = performance.now();
 
-  // Update HUD problem display
   const problemEl = document.getElementById('problem-display');
   if (problemEl) {
     problemEl.textContent = `${num1} ${operator} ${num2} = ?`;
   }
 
-  // Spawn answer bubbles
   spawnAnswerBubbles(answer);
 }
 
-/** Generate three unique wrong answers close to the correct one */
+/** Generate three unique wrong answers close to the correct one.
+ *  Spread scales with the answer so small results (e.g. division) get
+ *  plausible distractors instead of wildly distant numbers. */
 function generateWrongAnswers(correct, count = 3) {
+  const spread = Math.max(3, Math.min(10, Math.ceil(correct * 0.5)));
   const wrongs = new Set();
   let attempts = 0;
   while (wrongs.size < count && attempts < 200) {
     attempts++;
-    let wrong = correct + randInt(-10, 10);
-    // Ensure valid: non-negative, not equal to correct, unique
-    if (wrong < 0) wrong = correct + randInt(1, 10);
+    let wrong = correct + randInt(-spread, spread);
+    if (wrong < 0) wrong = correct + randInt(1, spread);
     if (wrong === correct) continue;
     if (wrongs.has(wrong)) continue;
     wrongs.add(wrong);
   }
-  // Fallback in case we struggle (shouldn't happen often)
   while (wrongs.size < count) {
     const fallback = correct + wrongs.size + 1;
     if (!wrongs.has(fallback) && fallback !== correct) wrongs.add(fallback);
