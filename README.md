@@ -1,8 +1,8 @@
 # Math Monster Arena
 
-A Space Invaders-style math game where you fly a creature through space, solve math problems, and evolve into increasingly powerful forms.
+A Space Invaders-style math game where you pilot a spaceship through space, solve math problems, and upgrade into increasingly powerful ships.
 
-Built with vanilla JavaScript, HTML5 Canvas, and CSS — no dependencies, no build step.
+Built with vanilla JavaScript, Three.js (3D), and CSS — no build step required.
 
 ## How to Play
 
@@ -12,7 +12,7 @@ Open `index.html` in any modern web browser. That's it.
 
 | Key | Action |
 |---|---|
-| Arrow Keys / WASD | Move your creature |
+| Arrow Keys / WASD | Move your spaceship |
 | Space | Shoot beams |
 | Escape | Pause / Resume |
 
@@ -27,17 +27,17 @@ Open `index.html` in any modern web browser. That's it.
 - Avoid **asteroids** and **wrong answers** — they cost you health.
 - Answer **10 questions** to level up. Difficulty scales with your level.
 
-### Creature Evolution
+### Spaceship Upgrades
 
-As you level up, your creature evolves through 5 stages:
+As you level up, your spaceship upgrades through 5 classes:
 
-1. **Hatchling** — where every math monster begins
-2. **Sparky** — gaining energy and confidence
-3. **Blazer** — fire-powered and fast
-4. **Stormclaw** — lightning strikes twice
-5. **Legendragon** — the ultimate math beast
+1. **Scout Pod** — where every pilot begins
+2. **Viper** — fast and nimble interceptor
+3. **Phantom** — stealth-class fighter
+4. **Dreadnought** — heavy assault warship
+5. **Celestial Titan** — the ultimate flagship
 
-Your weapon also upgrades through 5 tiers as you progress.
+Your weapons also upgrade through 5 tiers, with progressively cooler visuals and multi-shot patterns at higher levels.
 
 ### Achievements
 
@@ -58,7 +58,7 @@ Press **Escape** to pause, then use the **Save Game** / **Load Game** buttons. P
 ```
 ├── index.html      — Main HTML entry point
 ├── game.js         — Game engine, logic, and state management
-├── creatures.js    — Canvas rendering for creatures and entities
+├── creatures.js    — Three.js 3D mesh factories for ships and entities
 ├── style.css       — UI styling
 └── .gitignore
 ```
